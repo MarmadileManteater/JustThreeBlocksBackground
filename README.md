@@ -3,8 +3,8 @@
 
 This is a background scene for my website.
 
-![Screenshot 1](./screenshots/screenshot1.png)
+![Screenshot 1](./screenshots/screenshot-1.png)
 
 ### Engine:
 
-This scene is made with Godot which is [licensed under the MIT license](https://godotengine.org/license/).
+This scene was made with Godot which is [licensed under the MIT license](https://godotengine.org/license/).
