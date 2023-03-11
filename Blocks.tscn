@@ -1,0 +1,222 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Floating.cs" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="VisualShaderNodeColorConstant" id=12]
+constant = Color( 0.358676, 0.574219, 0.298325, 1 )
+
+[sub_resource type="VisualShader" id=13]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:2
+	vec3 n_out2p0 = vec3(0.358676, 0.574219, 0.298325);
+	float n_out2p1 = 1.000000;
+
+// Output:0
+	EMISSION = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -77, 173 )
+nodes/fragment/2/node = SubResource( 12 )
+nodes/fragment/2/position = Vector2( 40, 280 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=15]
+constant = Color( 0.322061, 0.314178, 0.566406, 1 )
+
+[sub_resource type="VisualShader" id=16]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:2
+	vec3 n_out2p0 = vec3(0.322061, 0.314178, 0.566406);
+	float n_out2p1 = 1.000000;
+
+// Output:0
+	EMISSION = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -77, 173 )
+nodes/fragment/2/node = SubResource( 15 )
+nodes/fragment/2/position = Vector2( 140, 280 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 16 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=3]
+constant = Color( 0.746094, 0.253555, 0.253555, 1 )
+
+[sub_resource type="VisualShader" id=4]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:2
+	vec3 n_out2p0 = vec3(0.746094, 0.253555, 0.253555);
+	float n_out2p1 = 1.000000;
+
+// Output:0
+	EMISSION = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -77, 173 )
+nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/position = Vector2( 200, 200 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+
+[sub_resource type="Environment" id=6]
+background_mode = 1
+
+[sub_resource type="CubeMesh" id=7]
+
+[sub_resource type="VisualShaderNodeColorConstant" id=8]
+constant = Color( 0, 0, 0, 1 )
+
+[sub_resource type="VisualShader" id=9]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:2
+	vec3 n_out2p0 = vec3(0.000000, 0.000000, 0.000000);
+	float n_out2p1 = 1.000000;
+
+// Output:0
+	EMISSION = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -77, 173 )
+nodes/fragment/2/node = SubResource( 8 )
+nodes/fragment/2/position = Vector2( 234, 328 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
+
+[sub_resource type="BoxShape" id=11]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Cube 1" type="RigidBody" parent="."]
+gravity_scale = 0.5
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube 1"]
+shape = SubResource( 1 )
+
+[node name="CSGMesh" type="CSGMesh" parent="Cube 1"]
+mesh = SubResource( 2 )
+material = SubResource( 14 )
+
+[node name="Cube 2" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.12818, 0, 0 )
+gravity_scale = 0.5
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube 2"]
+shape = SubResource( 1 )
+
+[node name="CSGMesh" type="CSGMesh" parent="Cube 2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000881195, 0.0151796, -0.0306311 )
+mesh = SubResource( 2 )
+material = SubResource( 17 )
+
+[node name="Cube 3" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.128, 0, 0 )
+gravity_scale = 0.5
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube 3"]
+shape = SubResource( 1 )
+
+[node name="CSGMesh" type="CSGMesh" parent="Cube 3"]
+mesh = SubResource( 2 )
+material = SubResource( 5 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.951771, 0.306808, 0, -0.306808, 0.951771, 0, 2.646, 4.379 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 6 )
+
+[node name="CSGMesh" type="CSGMesh" parent="."]
+transform = Transform( 8.04504, 0, 0, 0, 0.665431, 0, 0, 0, 6.62186, 0, -0.648724, 0 )
+mesh = SubResource( 7 )
+material = SubResource( 10 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -17.1471, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 8.13952, 0, 0, 0, 0.101151, 0, 0, 0, 5.25996, 0, -1.17649, 0 )
+shape = SubResource( 11 )
