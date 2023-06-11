@@ -51,6 +51,11 @@ jobs:
       - name: 🚚 Move license info into output directory
         run: |
           cp GODOT_LICENSE.txt ./artifacts/HTML5/
+          cp LICENSE ./artifacts/HTML5
+
+      - name: 🚚 Move lively metadata into output directory
+        run: |
+          cp lively/* ./artifacts/HTML5/
 
       - name: ⬆ Upload HTML5 Artifact
         uses: actions/upload-artifact@v1
