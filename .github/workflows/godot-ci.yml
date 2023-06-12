@@ -57,12 +57,14 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
       - name: Scons Build godot template
-        shell: sh
+        # just continue working so I can see what happened
+        continue-on-error: true
         env:
             SCONSFLAGS: ${{ env.SCONSFLAGS }}
             SCONS_CACHE: ${{ inputs.scons-cache }}
             SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
         run: |
+          echo $SCONS_CACHE
           mv custom.py godot/
           cd godot/
           echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
