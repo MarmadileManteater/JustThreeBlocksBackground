@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           lfs: true
+
       - name: Set up build deps
         run: |
           sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
@@ -36,6 +37,10 @@ jobs:
         with:
           version: ${{env.EM_VERSION}}
           actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+      - name: Verify Emscripten setup
+        run: |
+          emcc -v
 
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
@@ -70,7 +75,7 @@ jobs:
           cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
           cd ../godot/
           sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
-
+  
       - name: Scons Build godot template
         # just continue working so I can see what happened
         # continue-on-error: true
@@ -84,7 +89,7 @@ jobs:
           cd godot/
           echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
-          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} mono_prefix=./modules/mono/glue
+          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           ls -l bin/
         
       - name: 🍷 Setup WINE
