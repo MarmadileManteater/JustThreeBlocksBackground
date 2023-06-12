@@ -1,7 +1,8 @@
 name: "godot-ci export"
 on:
   push:
-    [development]
+    branches: [ development ]
+
   schedule:
     - cron: "50 23 * * *"
   workflow_dispatch:
