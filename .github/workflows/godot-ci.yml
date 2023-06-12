@@ -8,7 +8,7 @@ env:
   GODOT_VERSION: 3.5.1
   EXPORT_NAME: JustThreeBlocks
   PROJECT_PATH: ./
-  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no mono_prefix=/
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no mono_prefix=/bin/
   EM_VERSION: 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
 jobs:
