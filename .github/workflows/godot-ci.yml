@@ -29,6 +29,10 @@ jobs:
         run: |
           sudo apt-get install libxi-dev
 
+      - name: Set up libgl1 mesa dev
+        run: |
+          sudo apt-get install libgl1-mesa-dev
+
       - name: Set up Emscripten latest
         uses: mymindstorm/setup-emsdk@v12
         with:
