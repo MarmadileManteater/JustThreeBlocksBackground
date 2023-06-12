@@ -57,10 +57,11 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
         
-      - name: Link mono installation to where Godot wants it 🙄
+      - name: Link mono installation to where Godot && Scons want it
         run: |
           sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
           sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+          sudo ln -s /bin/mono-sgen /bin/mono-2.0-sgen 
 
       - name: Download Godot 3.5 & create glue
         run: |
