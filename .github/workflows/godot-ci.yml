@@ -55,6 +55,15 @@ jobs:
           python -c "import sys; print(sys.version)"
           python -m pip install scons==4.4.0
           scons --version
+        
+      - name: Download Godot 3.5 & create glue
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
+          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
+          cd Godot_v3.5.1-stable_mono_linux_headless_64
+          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
+          ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ../modules/mono/glue
+
       - name: Scons Build godot template
         # just continue working so I can see what happened
         continue-on-error: true
@@ -70,7 +79,7 @@ jobs:
           if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
           scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           ls -l bin/
-          
+        
       - name: 🍷 Setup WINE
         id: wine_install
         run: |
