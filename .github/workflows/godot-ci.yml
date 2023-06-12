@@ -69,7 +69,7 @@ jobs:
           chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
           cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
           cd ../godot/
-          ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
 
       - name: Scons Build godot template
         # just continue working so I can see what happened
