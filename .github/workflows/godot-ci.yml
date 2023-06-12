@@ -11,7 +11,7 @@ env:
   GODOT_VERSION: 3.5.1
   EXPORT_NAME: JustThreeBlocks
   PROJECT_PATH: ./
-  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no mono_prefix=../Godot_v3.5.1-stable_mono_linux_headless_64/GodotSharp/Mono
   EM_VERSION: 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
 jobs:
@@ -89,7 +89,7 @@ jobs:
           cd godot/
           echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
-          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} mono_prefix=../Godot_v3.5.1-stable_mono_linux_headless_64/GodotSharp/Mono
+          scons platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           ls -l bin/
         
       - name: 🍷 Setup WINE

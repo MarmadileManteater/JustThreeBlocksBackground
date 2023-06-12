@@ -1,5 +1,6 @@
 # Generated using https://godot-build-options-generator.github.io
 
+javascript_eval="no"
 production = "yes"
 optimize = "size"
 disable_advanced_gui = "yes"
