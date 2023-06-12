@@ -29,14 +29,14 @@ jobs:
         id: tag_version
         run: |
           echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+# need to figure out how to build a godot export template
+#      - name: 🔌 Install scons
+#        run: |
+#          sudo apt-get install scons
 
-      - name: 🔌 Install scons
-        run: |
-          sudo apt-get install scons
-
-      - name: Load custom.py
-        run: |
-          scons profile=custom.py
+#      - name: Load custom.py
+#        run: |
+#          scons profile=custom.py
 
       - name: 📤 Export game
         id: export
