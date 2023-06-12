@@ -51,9 +51,8 @@ jobs:
           architecture: ${{ inputs.python-arch }}
       - name: Clone godot 3.5
         run: |
-          git clone https://github.com/godotengine/godot.git godot
+          git clone -b 3.5 https://github.com/godotengine/godot.git godot
           cd godot
-          git checkout 3.5
       - name: Setup scons
         shell: bash
         run: |
