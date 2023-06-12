@@ -56,10 +56,10 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
         
-      - name: Verify mono installation
+      - name: Link mono installation to where Godot wants it 🙄
         run: |
-# idk i literally have no effing idea where mono stores its DLLs
-          find . -name mono
+          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
+          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
 
       - name: Download Godot 3.5 & create glue
         run: |
