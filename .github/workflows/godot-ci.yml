@@ -64,7 +64,7 @@ jobs:
             SCONS_CACHE: ${{ inputs.scons-cache }}
             SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
         run: |
-          echo $SCONS_CACHE
+          export SCONS_CACHE=${{ env.SCONS_CACHE }}
           mv custom.py godot/
           cd godot/
           echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
