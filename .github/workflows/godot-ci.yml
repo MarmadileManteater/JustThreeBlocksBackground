@@ -56,6 +56,11 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
         
+      - name: Link mono installation to where Godot wants it 🙄
+        run: |
+          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
+          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+
       - name: Download Godot 3.5 & create glue
         run: |
           wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
@@ -77,9 +82,9 @@ jobs:
           export SCONS_CACHE="${{ github.workspace }}/.scons-cache/"
           mv custom.py godot/
           cd godot/
-          echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} --mono-prefix=/lib/mono
+          echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
-          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} --mono-prefix=/lib/mono
+          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} --mono-lib=/lib/mono
           ls -l bin/
         
       - name: 🍷 Setup WINE
