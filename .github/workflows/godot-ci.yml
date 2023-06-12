@@ -63,21 +63,26 @@ jobs:
           sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
           sudo ln -s /bin/mono-sgen /lib/mono-2.0-sgen 
 
-      - name: Download Godot 3.5 & create glue
+#      - name: Download Godot 3.5 & create glue
+#        run: |
+#          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
+#          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
+#          cd Godot_v3.5.1-stable_mono_linux_headless_64
+#          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
+#          cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
+#          cd ../godot/
+#          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+
+      - name: Create glue
         run: |
-          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
-          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
-          cd Godot_v3.5.1-stable_mono_linux_headless_64
-          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
-          cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
-          cd ../godot/
-          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+          cd godot/
+          scons p=x11 tools=yes module_mono_enabled=yes mono_glue=no
+          bin/godot.x11.tools.64.mono --generate-mono-glue ./modules/mono/glue
 
       - name: 🔎 Find wasm src directory??
         run: |
           find . -name library_mono.js
 
-  
       - name: Scons Build godot template
         # just continue working so I can see what happened
         # continue-on-error: true
