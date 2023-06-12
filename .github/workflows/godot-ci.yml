@@ -8,7 +8,7 @@ env:
   GODOT_VERSION: 3.5.1
   EXPORT_NAME: JustThreeBlocks
   PROJECT_PATH: ./
-  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no mono_prefix=/
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no tools=no mono_prefix=/
   EM_VERSION: 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
 jobs:
@@ -72,6 +72,11 @@ jobs:
           cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
           cd ../godot/
           sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+
+      - name: 🔎 Find wasm src directory??
+        run: |
+          find . -name library_mono.js
+
   
       - name: Scons Build godot template
         # just continue working so I can see what happened
