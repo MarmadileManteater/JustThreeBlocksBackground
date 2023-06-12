@@ -28,7 +28,11 @@ jobs:
       - name: Get tag from version
         id: tag_version
         run: |
-            echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Load custom.py
+        run: |
+          scons profile=custom.py
 
       - name: 📤 Export game
         id: export
