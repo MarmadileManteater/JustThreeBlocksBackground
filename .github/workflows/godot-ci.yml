@@ -73,7 +73,7 @@ jobs:
 
       - name: Scons Build godot template
         # just continue working so I can see what happened
-        continue-on-error: true
+        # continue-on-error: true
         env:
             SCONSFLAGS: ${{ env.SCONSFLAGS }}
             SCONS_CACHE: ${{ inputs.scons-cache }}
@@ -84,7 +84,7 @@ jobs:
           cd godot/
           echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
           if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
-          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} mono_prefix=/lib/mono
+          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }} mono_prefix=/
           ls -l bin/
         
       - name: 🍷 Setup WINE
