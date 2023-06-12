@@ -62,13 +62,8 @@ jobs:
           unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
           cd Godot_v3.5.1-stable_mono_linux_headless_64
           chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
-          ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ../modules/mono/glue
-
-      - name: ⬆ Upload files for testing
-        uses: actions/upload-artifact@v1
-        with:
-          name: ${{ env.EXPORT_NAME }}-TEST
-          path: .
+          cd ../
+          ./Godot_v3.5.1-stable_mono_linux_headless_64/Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
 
       - name: Scons Build godot template
         # just continue working so I can see what happened
