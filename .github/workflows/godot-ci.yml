@@ -64,7 +64,8 @@ jobs:
           chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
           cd ../
           ./Godot_v3.5.1-stable_mono_linux_headless_64/Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
-
+          ls .
+          ls ./Godot_v3.5.1-stable_mono_linux_headless_64
       - name: Scons Build godot template
         # just continue working so I can see what happened
         continue-on-error: true
