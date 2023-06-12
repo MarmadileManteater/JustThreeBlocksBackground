@@ -58,7 +58,8 @@ jobs:
         
       - name: Verify mono installation
         run: |
-          sudo ls /root/mono-installs/
+# idk i literally have no effing idea where mono stores its DLLs
+          find . -name mono
 
       - name: Download Godot 3.5 & create glue
         run: |
