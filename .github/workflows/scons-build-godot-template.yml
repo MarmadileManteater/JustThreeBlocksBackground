@@ -31,6 +31,7 @@ jobs:
       - name: Verify Emscripten setup
         run: |
           emcc -v
+          emcc --generate-config 
           
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
