@@ -21,6 +21,7 @@ jobs:
       - name: Set up build deps
         run: |
           sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
+          sudo apt-get install libxi-dev
       - name: Set up Emscripten latest
         uses: mymindstorm/setup-emsdk@v12
         with:
