@@ -82,7 +82,7 @@ jobs:
         
       - name: Link mono installation to where Godot wants it
         run: |
-          sudo ln -s /lib/mono/* /root/mono-installs/desktop-linux-x86_64-release/lib/mono
+          sudo ln -s /lib/mono/4.5 /root/mono-installs/desktop-linux-x86_64-release/lib/mono
         
       - name: Download Godot 3.5 & create glue
         run: |
