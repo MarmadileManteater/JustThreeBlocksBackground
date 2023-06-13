@@ -58,7 +58,7 @@ jobs:
             const linux_url = releaseInfo[0].assets.find(({name}) => name === "linux-x86_64.zip").url
             const wasm_runtime_url = releaseInfo[0].assets.find(({name}) => name === "wasm-runtime.zip").url
             return { linux_url, wasm_runtime_url }
-          result-encoding: object
+          result-encoding: json
       - name: Download godot mono installs
         run: |
           wget ${{ steps.vars.outputs.urls.linux_url }}
