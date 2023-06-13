@@ -46,15 +46,15 @@ jobs:
          source $PWD/emsdk/emsdk_env.sh
          emcc -v
           
-      - name: Set up mono
-        run: |
-          source $PWD/emsdk/emsdk_env.sh
-          git clone -b mono-6.12.0.198 https://github.com/mono/mono
-          export MONO_SOURCE_ROOT=$PWD/mono
-          git clone https://github.com/godotengine/godot-mono-builds
-          cd godot-mono-builds
-          ./wasm.py configure --target=runtime
-          ./wasm.py make --target=runtime
+#      - name: Set up mono
+#        run: |
+#          source $PWD/emsdk/emsdk_env.sh
+#          git clone -b mono-6.12.0.198 https://github.com/mono/mono
+#          export MONO_SOURCE_ROOT=$PWD/mono
+#          git clone https://github.com/godotengine/godot-mono-builds
+#          cd godot-mono-builds
+#          ./wasm.py configure --target=runtime
+#          ./wasm.py make --target=runtime
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
         with:
