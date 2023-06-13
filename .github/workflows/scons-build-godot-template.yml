@@ -67,15 +67,10 @@ jobs:
           wget ${{ steps.vars.outputs.urls.wasm_runtime_url }} 
           unzip -d ~/mono-installs wasm-runtime.zip
           cp -r ~/mono-installs/wasm-runtime /root/mono-installs/wasm-runtime-release/
-
-      #- name: Link mono installation to where Godot wants it
-      #  run: |
-      #    sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
-      #    sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
-#     
-#      - name: Clone godot 3.5
-#        run: |
-#         git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
+     
+      - name: Clone godot 3.5
+        run: |
+         git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
           cd godot
       - name: Setup scons
         shell: bash
