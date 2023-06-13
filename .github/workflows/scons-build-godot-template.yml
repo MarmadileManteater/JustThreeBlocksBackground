@@ -31,7 +31,7 @@ jobs:
       - name: Verify Emscripten setup
         run: |
           emcc -v
-          ln -s emsdk-cache/emsdk-main/.emscripten ~/.emscripten
+          cp emsdk-cache/emsdk-main/.emscripten ~/.emscripten
           ls ~/
           cat ~/.emscripten
           
