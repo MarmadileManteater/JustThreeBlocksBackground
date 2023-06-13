@@ -61,10 +61,10 @@ jobs:
           result-encoding: json
       - name: Download godot mono installs
         run: |
-          wget ${{ steps.vars.outputs.urls.linux_url }}
+          wget ${{ steps.urls.outputs.linux_url }}
           unzip -d ~/mono-installs linux-x86_64.zip
           sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
-          wget ${{ steps.vars.outputs.urls.wasm_runtime_url }} 
+          wget ${{ steps.urls.outputs.wasm_runtime_url }} 
           unzip -d ~/mono-installs wasm-runtime.zip
           cp -r ~/mono-installs/wasm-runtime /root/mono-installs/wasm-runtime-release/
      
