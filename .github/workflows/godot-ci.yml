@@ -21,30 +21,35 @@ jobs:
         uses: actions/checkout@v3
         with:
           lfs: true
-
-      - name: Set up build deps
-        run: |
-          sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
-      - name: Set up libxi-dev
-        run: |
-          sudo apt-get install libxi-dev
-      - name: Set up libgl1 mesa dev
-        run: |
-          sudo apt-get install libgl1-mesa-dev
-      - name: Set up Emscripten latest
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          git pull
-          ./emsdk install ${{ env.EM_VERSION }}-upstream
-          ./emsdk activate ${{ env.EM_VERSION }}-upstream
-          echo 'source "$PWD/emsdk_env.sh"' >> $HOME/.bash_profile
-          ln -s $PWD/upstream/emscripten ~/.emscripten
+# AFAIK there is no good example of how to build a mono export template in a gh workflow
+# if you are reading this and you have an example workflow to show that I am wrong
+# plz send it to me
+# I have spent the last 24 hours debugging the build process, 
+# so I decided it isn't worth the couple of MB of space savings
+# maybe I'll come back
+#      - name: Set up build deps
+#        run: |
+#          sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
+#      - name: Set up libxi-dev
+#        run: |
+#          sudo apt-get install libxi-dev
+#      - name: Set up libgl1 mesa dev
+#        run: |
+#          sudo apt-get install libgl1-mesa-dev
+#      - name: Set up Emscripten latest
+#        run: |
+#          git clone https://github.com/emscripten-core/emsdk.git
+#          cd emsdk
+#          git pull
+#          ./emsdk install ${{ env.EM_VERSION }}-upstream
+#          ./emsdk activate ${{ env.EM_VERSION }}-upstream
+#          echo 'source "$PWD/emsdk_env.sh"' >> $HOME/.bash_profile
+#         ln -s $PWD/upstream/emscripten ~/.emscripten
       
-      - name: Verify emsdk installed
-        run: |
-         source $PWD/emsdk/emsdk_env.sh
-         emcc -v
+#      - name: Verify emsdk installed
+#        run: |
+#         source $PWD/emsdk/emsdk_env.sh
+#         emcc -v
           
 #      - name: Set up mono
 #        run: |
@@ -55,55 +60,55 @@ jobs:
 #          cd godot-mono-builds
 #          ./wasm.py configure --target=runtime
 #          ./wasm.py make --target=runtime
-      - name: 🐍 Set up Python 3.x
-        uses: actions/setup-python@v4
-        with:
-          # Semantic version range syntax or exact version of a Python version
-          python-version: ${{ inputs.python-version }}
-          # Optional - x64 or x86 architecture, defaults to x64
-          architecture: ${{ inputs.python-arch }}
-      
-      - name: Link mono installation to where Godot wants it
-        run: |
-          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
-          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
-     
-      - name: Clone godot 3.5
-        run: |
-          git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
-          cd godot
-      - name: Setup scons
-        shell: bash
-        run: |
-          python -c "import sys; print(sys.version)"
-          python -m pip install scons==4.4.0
-          scons --version
+#      - name: 🐍 Set up Python 3.x
+#        uses: actions/setup-python@v4
+#        with:
+#          # Semantic version range syntax or exact version of a Python version
+#          python-version: ${{ inputs.python-version }}
+#          # Optional - x64 or x86 architecture, defaults to x64
+#          architecture: ${{ inputs.python-arch }}
+#      
+#      - name: Link mono installation to where Godot wants it
+#        run: |
+#          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
+#          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+#     
+#      - name: Clone godot 3.5
+#        run: |
+#          git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
+#          cd godot
+#      - name: Setup scons
+#        shell: bash
+#        run: |
+#          python -c "import sys; print(sys.version)"
+#          python -m pip install scons==4.4.0
+#          scons --version
         
-      - name: Download Godot 3.5 & create glue
-        run: |
-          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
-          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
-          cd Godot_v3.5.1-stable_mono_linux_headless_64
-          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
-          cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
-          cd ../godot/
-          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
-
-      - name: Scons Build godot template
-        # just continue working so I can see what happened
-        # continue-on-error: true
-        env:
-            SCONSFLAGS: ${{ env.SCONSFLAGS }}
-            SCONS_CACHE: ${{ inputs.scons-cache }}
-            SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
-        run: |
-          export SCONS_CACHE="${{ github.workspace }}/.scons-cache/"
-          mv custom.py godot/
-          cd godot/
-          echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
-          if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
-          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
-          ls -l bin/
+#      - name: Download Godot 3.5 & create glue
+#        run: |
+#          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
+#          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
+#          cd Godot_v3.5.1-stable_mono_linux_headless_64
+#          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
+#          cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
+#          cd ../godot/
+#          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+#
+#      - name: Scons Build godot template
+#        # just continue working so I can see what happened
+#        # continue-on-error: true
+#        env:
+#            SCONSFLAGS: ${{ env.SCONSFLAGS }}
+#            SCONS_CACHE: ${{ inputs.scons-cache }}
+#            SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
+#        run: |
+#          export SCONS_CACHE="${{ github.workspace }}/.scons-cache/"
+#          mv custom.py godot/
+#          cd godot/
+#          echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
+#          if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
+#          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
+#          ls -l bin/
         
       - name: 🍷 Setup WINE
         id: wine_install
