@@ -41,7 +41,7 @@ jobs:
         with:
           script: |
             return await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).text()
-          result-encoding: string
+          result-encoding: json
           
       - uses: actions/github-script@v6
         id: linux_url
