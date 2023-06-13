@@ -80,6 +80,10 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
         
+      - name: Link mono installation to where Godot wants it
+        run: |
+          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+        
       - name: Download Godot 3.5 & create glue
         run: |
           wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
