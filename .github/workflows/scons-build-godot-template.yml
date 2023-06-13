@@ -62,10 +62,10 @@ jobs:
       - name: Download godot mono installs
         run: |
           echo ${{ steps.urls.outputs }}
-          wget https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 -o linux-x86_64.zip
+          wget -o linux-x86_64.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 
           unzip -d ~/mono-installs linux-x86_64.zip
           sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
-          wget https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/109947347 -o wasm-runtime.zip
+          wget -o wasm-runtime.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/109947347
           unzip -d ~/mono-installs wasm-runtime.zip
           cp -r ~/mono-installs/wasm-runtime /root/mono-installs/wasm-runtime-release/
      
