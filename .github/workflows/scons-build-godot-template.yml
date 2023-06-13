@@ -66,7 +66,7 @@ jobs:
         run: |
           wget -O ~/linux-x86_64.zip ${{ steps.linux_url.outputs.result }}
           wget -O ~/wasm-runtime.zip ${{ steps.wasm_url.outputs.result }}
-          unzip -d ~/mono-installs ~/linux-x86_64.zip
+          sudo unzip -d /root/mono-installs ~/linux-x86_64.zip
           unzip -d ~/mono-installs ~/wasm-runtime.zip
      
       - name: Clone godot 3.5
