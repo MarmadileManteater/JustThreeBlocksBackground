@@ -55,19 +55,21 @@ jobs:
         id: release_info
         with:
           script: |
-            return await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).json()
+            return await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).string()
           result-encoding: string
           
       - uses: actions/github-script@v6
         id: linux_url
         with:
           script: |
-            return ${{ steps.release_info.outputs }}[0].assets.find(({name}) => name === "linux-x86_64.zip").url
+            const releaseInfo = ${{ steps.release_info.outputs }}
+            return releaseInfo[0].assets.find(({name}) => name === "linux-x86_64.zip").url
           result-encoding: string
       - uses: actions/github-script@v6
         id: wasn_url
         with:
           script: |
+            const releaseInfo = ${{ steps.release_info.outputs }}
             return releaseInfo[0].assets.find(({name}) => name === "wasm-runtime.zip").url
           result-encoding: string
       - name: Download godot mono installs
