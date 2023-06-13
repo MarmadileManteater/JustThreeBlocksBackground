@@ -32,6 +32,8 @@ jobs:
         run: |
           emcc -v
           ln -s emsdk-cache/emsdk-main/.emscripten ~/.emscripten
+          ls ~/
+          cat ~/.emscripten
           
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
