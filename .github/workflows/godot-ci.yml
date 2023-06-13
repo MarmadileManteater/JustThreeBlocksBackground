@@ -25,15 +25,12 @@ jobs:
       - name: Set up build deps
         run: |
           sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
-
       - name: Set up libxi-dev
         run: |
           sudo apt-get install libxi-dev
-
       - name: Set up libgl1 mesa dev
         run: |
           sudo apt-get install libgl1-mesa-dev
-
       - name: Set up Emscripten latest
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
@@ -58,7 +55,6 @@ jobs:
           cd godot-mono-builds
           ./wasm.py configure --target=runtime
           ./wasm.py make --target=runtime
-
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
         with:
@@ -77,12 +73,6 @@ jobs:
           python -m pip install scons==4.4.0
           scons --version
         
-      - name: Link mono installation to where Godot && Scons want it
-        run: |
-          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
-          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
-          sudo ln -s /bin/mono-sgen /lib/mono-2.0-sgen 
-
       - name: Download Godot 3.5 & create glue
         run: |
           wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
@@ -92,16 +82,6 @@ jobs:
           cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
           cd ../godot/
           sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
-
-      - name: Look at `bin`
-        run: |
-          ls ./godot/bin
-
-#      - name: Create glue
-#        run: |
-#          cd godot/
-#          scons p=x11 tools=yes module_mono_enabled=yes mono_glue=no
-#          bin/godot.x11.tools.64.mono --generate-mono-glue ./modules/mono/glue
 
       - name: Scons Build godot template
         # just continue working so I can see what happened
@@ -129,7 +109,6 @@ jobs:
         id: tag_version
         run: |
           echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
       - name: 📤 Export game
         id: export
         # Use latest version (see releases for all versions)
@@ -152,14 +131,11 @@ jobs:
         run: |
           cp GODOT_LICENSE.txt ./artifacts/HTML5/
           cp LICENSE ./artifacts/HTML5
-
       - name: 🚚 Move lively metadata into output directory
         run: |
           cp lively/* ./artifacts/HTML5/
-
       - name: ⬆ Upload HTML5 Artifact
         uses: actions/upload-artifact@v1
         with:
           name: ${{ env.EXPORT_NAME }}-HTML5
           path: ./artifacts/HTML5
-
