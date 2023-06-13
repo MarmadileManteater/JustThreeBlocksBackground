@@ -62,6 +62,12 @@ jobs:
           python-version: ${{ inputs.python-version }}
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: ${{ inputs.python-arch }}
+      
+      - name: Link mono installation to where Godot wants it
+        run: |
+          sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
+          sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+     
       - name: Clone godot 3.5
         run: |
           git clone -b 3.x https://github.com/godotengine/godot.git godot --single-branch
