@@ -31,7 +31,7 @@ jobs:
       - name: Verify Emscripten setup
         run: |
           emcc -v
-          emcc --generate-config 
+          ln -s emsdk-cache/emsdk-main/.emscripten ~/.emscripten
           
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
