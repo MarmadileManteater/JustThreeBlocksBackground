@@ -70,7 +70,7 @@ jobs:
      
       - name: Clone godot 3.5
         run: |
-          git clone -b 3.x https://github.com/godotengine/godot.git godot --single-branch
+          git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
           cd godot
       - name: Setup scons
         shell: bash
