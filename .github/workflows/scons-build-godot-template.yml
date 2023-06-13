@@ -59,7 +59,7 @@ jobs:
           result-encoding: string
       - name: Download godot mono installs
         run: |
-          echo ${{ steps.wasm_url.outputs }}
+          echo ${{ steps.wasm_url.outputs.result }}
           wget -o linux-x86_64.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 
           unzip -d ~/mono-installs linux-x86_64.zip
           sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
