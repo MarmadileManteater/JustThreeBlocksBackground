@@ -51,7 +51,7 @@ jobs:
             return releaseInfo.find(({name}) => name === "linux-x86_64.zip").url
           result-encoding: string
       - uses: actions/github-script@v6
-        id: wasn_url
+        id: wasm_url
         with:
           script: |
             const releaseInfo = ${{ steps.release_info.outputs.result }}
@@ -59,11 +59,12 @@ jobs:
           result-encoding: string
       - name: Download godot mono installs
         run: |
+          echo ${{ steps.linux_url.outputs.result }}
           echo ${{ steps.wasm_url.outputs.result }}
-          wget -o linux-x86_64.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 
+          wget -O linux-x86_64.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 
           unzip -d ~/mono-installs linux-x86_64.zip
           sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
-          wget -o wasm-runtime.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/109947347
+          wget -O wasm-runtime.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/109947347
           unzip -d ~/mono-installs wasm-runtime.zip
           cp -r ~/mono-installs/wasm-runtime /root/mono-installs/wasm-runtime-release/
      
