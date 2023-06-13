@@ -8,7 +8,7 @@ env:
   SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no tools=no mono_prefix=$HOME/mono-installs/wasm-runtime-release/
   EM_VERSION: 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
-  EMSCRIPTEN_ROOT: ~/.emscripten
+  EM_CONFIG: emsdk-cache/emsdk-main/.emscripten
 jobs:
   build:
     name: Export
@@ -31,9 +31,6 @@ jobs:
       - name: Verify Emscripten setup
         run: |
           emcc -v
-          cp emsdk-cache/emsdk-main/.emscripten ~/.emscripten
-          ls ~/
-          cat ~/.emscripten
           
       - name: 🐍 Set up Python 3.x
         uses: actions/setup-python@v4
