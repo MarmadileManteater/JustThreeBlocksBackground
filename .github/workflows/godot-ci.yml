@@ -8,7 +8,7 @@ env:
   GODOT_VERSION: 3.5.1
   EXPORT_NAME: JustThreeBlocks
   PROJECT_PATH: ./
-  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no tools=no mono_prefix=.
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no tools=no mono_prefix=$HOME/mono-installs/wasm-runtime-release/
   EM_VERSION: 1.39.9 # 3.1.18
   EM_CACHE_FOLDER: "emsdk-cache"
   EMSCRIPTEN_ROOT: ~/.emscripten
