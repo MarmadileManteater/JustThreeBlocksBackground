@@ -1,0 +1,109 @@
+name: "scons build slimmed godot template"
+on:
+  push:
+    branches: [ scons-build ]
+  workflow_dispatch:
+
+env:
+  SCONSFLAGS: verbose=yes warnings=extra werror=yes debug_symbols=no tools=no mono_prefix=$HOME/mono-installs/wasm-runtime-release/
+  EM_VERSION: 3.1.18
+  EM_CACHE_FOLDER: "emsdk-cache"
+  EMSCRIPTEN_ROOT: ~/.emscripten
+jobs:
+  build:
+    name: Export
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+# AFAIK there is no good example of how to build a mono export template in a gh workflow
+# if you are reading this and you have an example workflow to show that I am wrong
+# plz send it to me
+# I have spent the last 24 hours debugging the build process, 
+# so I decided it isn't worth the couple of MB of space savings
+# maybe I'll come back
+#      - name: Set up build deps
+#        run: |
+#          sudo apt-get install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxrandr-dev
+#      - name: Set up libxi-dev
+#        run: |
+#          sudo apt-get install libxi-dev
+#      - name: Set up libgl1 mesa dev
+#        run: |
+#          sudo apt-get install libgl1-mesa-dev
+      - name: Set up Emscripten latest
+        uses: mymindstorm/setup-emsdk@v12
+        with:
+          version: ${{env.EM_VERSION}}
+          actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+      - name: Verify Emscripten setup
+        run: |
+          emcc -v
+          
+      - name: 🐍 Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: ${{ inputs.python-version }}
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: ${{ inputs.python-arch }}
+      - uses: actions/github-script@v6
+        id: urls
+        with:
+          script: |
+            const releaseInfo = await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).json()
+            const linux_url = releaseInfo[0].assets.find(({name}) => name === "linux-x86_64.zip").url
+            const wasm_runtime_url = releaseInfo[0].assets.find(({name}) => name === "wasm-runtime.zip").url
+            return { linux_url, wasm_runtime_url }
+          result-encoding: object
+      - name: Download godot mono installs
+        run: |
+          wget ${{ steps.vars.outputs.urls.linux_url }}
+          unzip -d ~/mono-installs linux-x86_64.zip
+          sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
+          wget ${{ steps.vars.outputs.urls.wasm_runtime_url }} 
+          unzip -d ~/mono-installs wasm-runtime.zip
+          cp -r ~/mono-installs/wasm-runtime /root/mono-installs/wasm-runtime-release/
+
+      #- name: Link mono installation to where Godot wants it
+      #  run: |
+      #    sudo mkdir -p /root/mono-installs/desktop-linux-x86_64-release/lib
+      #    sudo ln -s /lib/mono /root/mono-installs/desktop-linux-x86_64-release/lib
+#     
+#      - name: Clone godot 3.5
+#        run: |
+#         git clone -b 3.5 https://github.com/godotengine/godot.git godot --single-branch
+          cd godot
+      - name: Setup scons
+        shell: bash
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons==4.4.0
+          scons --version
+        
+      - name: Download Godot 3.5 & create glue
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_mono_linux_headless_64.zip
+          unzip -d . Godot_v3.5.1-stable_mono_linux_headless_64.zip
+          cd Godot_v3.5.1-stable_mono_linux_headless_64
+          chmod +x Godot_v3.5.1-stable_mono_linux_headless.64
+          cp Godot_v3.5.1-stable_mono_linux_headless.64 ../godot/
+          cd ../godot/
+          sudo ./Godot_v3.5.1-stable_mono_linux_headless.64 --generate-mono-glue ./modules/mono/glue
+
+      - name: Scons Build godot template
+        env:
+            SCONSFLAGS: ${{ env.SCONSFLAGS }}
+            SCONS_CACHE: ${{ inputs.scons-cache }}
+            SCONS_CACHE_LIMIT: ${{ inputs.scons-cache-limit }}
+        run: |
+          export SCONS_CACHE="${{ github.workspace }}/.scons-cache/"
+          mv custom.py godot/
+          cd godot/
+          echo "Building with flags:" platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
+          if [ "${{ inputs.target }}" != "editor" ]; then rm -rf editor; fi  # Ensure we don't include editor code.
+          scons profile=custom.py platform=javascript target=release tests=false ${{ env.SCONSFLAGS }}
+          ls -l bin/
