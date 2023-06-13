@@ -50,18 +50,29 @@ jobs:
           python-version: ${{ inputs.python-version }}
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: ${{ inputs.python-arch }}
-      - uses: actions/github-script@v6
-        id: urls
+      - name: Get release info
+        uses: actions/github-script@v6
+        id: release_info
         with:
           script: |
-            const releaseInfo = await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).json()
-            const linux_url = releaseInfo[0].assets.find(({name}) => name === "linux-x86_64.zip").url
-            const wasm_runtime_url = releaseInfo[0].assets.find(({name}) => name === "wasm-runtime.zip").url
-            return { linux_url, wasm_runtime_url }
+            return await (await fetch("https://api.github.com/repos/godotengine/godot-mono-builds/releases")).json()
           result-encoding: json
+          
+      - uses: actions/github-script@v6
+        id: linux_url
+        with:
+          script: |
+            return ${{ steps.release_info.outputs }}[0].assets.find(({name}) => name === "linux-x86_64.zip").url
+          result-encoding: string
+      - uses: actions/github-script@v6
+        id: wasn_url
+        with:
+          script: |
+            return releaseInfo[0].assets.find(({name}) => name === "wasm-runtime.zip").url
+          result-encoding: string
       - name: Download godot mono installs
         run: |
-          echo ${{ steps.urls.outputs }}
+          echo ${{ steps.wasm_url.outputs }}
           wget -o linux-x86_64.zip https://api.github.com/repos/godotengine/godot-mono-builds/releases/assets/95011386 
           unzip -d ~/mono-installs linux-x86_64.zip
           sudo cp -r ~/mono-installs/linux-x86_64 /root/mono-installs/desktop-linux-x86_64-release/
